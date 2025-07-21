@@ -2,10 +2,10 @@
 Sales Performance Analysis Using Adventure Works Data
 # Sales Performance Analysis Using AdventureWorks
 
-This project explores key sales performance insights using the AdventureWorksDW2013 dataset. The goal is to demonstrate SQL skills in real business scenarios and showcase BI analysis for a data analyst portfolio.
+This project explores key sales performance insights using the AdventureWorks dataset. It demonstrates SQL skills in real business scenarios and showcases Business Intelligence analysis to support data-driven decision-making.
 
 # Insights Covered
-- Top 5 sales reps by revenue in 2024
+- Top 5 sales reps by revenue yearly
 --Total Sales by region and year
 --Compare revenue per product category
 --Monthly revenue trend 
