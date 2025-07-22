@@ -1,0 +1,18 @@
+Top 5 total sales reps by revenue in 2013
+select top 5 e.firstname + '-' + e.lastname as salesrep,sum(f.salesamount) as total_revenue
+from factresellersales as f 
+join dimemployee as e on f.employeekey = e.employeekey
+join dimdate as d on f.orderdatekey = d.datekey
+where d.calendaryear=2013
+group by e.firstname,e.lastname
+order by total_revenue desc
+
+Business Insight Summary
+Based on the total revenue generated, LINDA MITCHELL ranked as the top-performing sales rep. This insight is valuable for performance evaluations and strategic decisions such as:
+A.  Compensation reviews (e.g., commission raise or salary increase)
+B.  Promotion opportunities (e.g., leading a sales team or managing a new branch)
+C.  Mentorship roles (e.g., training underperforming sales staff)
+D.  This performance metric can be further combined with KPIs like customer retention, order volume, and average deal size to make even more informed decisions.
+
+
+
