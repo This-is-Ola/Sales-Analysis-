@@ -5,7 +5,7 @@ Sales Performance Analysis Using Adventure Works Data
 This project explores key sales performance insights using the AdventureWorks dataset. It demonstrates SQL skills in real business scenarios and showcases Business Intelligence analysis to support data-driven decision-making.
 
 # Insights Covered
-- Top 5 sales reps by revenue yearly
+- Top 5 sales reps by revenue monthly in 2013 
 --Total Sales by region and year
 --Compare revenue per product category
 --Monthly revenue trend 
