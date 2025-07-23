@@ -1,0 +1,38 @@
+Compare revenue per product category
+select sum(f.salesamount) as revenue,dc.englishproductcategoryname as productcategory
+from factresellersales as f
+join dimproduct as p on p.productkey = f.productkey
+join dimproductsubcategory as dp on p.productsubcategorykey=dp.productsubcategorykey
+join dimproductcategory as dc on dp.productcategorykey = dc.productcategorykey
+group by dc.englishproductcategoryname
+order by revenue 
+
+INSIGHT 
+By comparing revenue across product categories, we can clearly identify which categories generate the most value for the business.
+This helps assess consumer preferences, uncover underperforming product lines, 
+and guide product management decisions such as inventory planning, marketing focus, and product discontinuation.
+
+Direct Business Use Case:
+Focus marketing efforts on high-performing categories.
+Investigate why certain categories underperform (pricing, quality, demand).
+Align product development with what customers are actually buying.
+
+Furthermore To Compare how each product is doing in each quarter
+In order to Understand and determine
+Top-performing Product categories per quarter
+Identify seasonal demand patterns (e.g., Bikes peaking in all the quarters and Accesories are not doing well in all quarters and came to an alltime LOW in the lastquarter)
+Guide decisions on inventory, marketing, and promotions
+
+
+With Perquarter as (select sum(f.salesamount) as revenue,dc.englishproductcategoryname as productcategory,datepart(quarter,dd.fulldatealternatekey) as quarterly,
+row_number () over (partition by datepart(quarter,dd.fulldatealternatekey) order by sum(f.salesamount) desc) as rn
+from factresellersales as f
+join dimproduct as p on p.productkey = f.productkey
+join dimproductsubcategory as dp on p.productsubcategorykey=dp.productsubcategorykey
+join dimproductcategory as dc on dp.productcategorykey = dc.productcategorykey
+join dimdate as dd on f.OrderDateKey=dd.DateKey
+where dd.calendaryear = 2013
+group by dc.englishproductcategoryname,datepart(quarter,dd.fulldatealternatekey)
+)
+select * from Perquarter
+order by quarterly,revenue DESC
