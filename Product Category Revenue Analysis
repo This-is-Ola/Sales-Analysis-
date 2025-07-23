@@ -16,13 +16,11 @@ Direct Business Use Case:
 Focus marketing efforts on high-performing categories.
 Investigate why certain categories underperform (pricing, quality, demand).
 Align product development with what customers are actually buying.
-
-Furthermore To Compare how each product is doing in each quarter
-In order to Understand and determine
-Top-performing Product categories per quarter
+++++++++
+FURTHERMORE TO COMPARE HOW EACH PRODUCT IS DOING IN EACH QUARTER 
+In order to Understand and determine - Top-performing Product categories per quarter
 Identify seasonal demand patterns (e.g., Bikes peaking in all the quarters and Accesories are not doing well in all quarters and came to an alltime LOW in the lastquarter)
 Guide decisions on inventory, marketing, and promotions
-
 
 With Perquarter as (select sum(f.salesamount) as revenue,dc.englishproductcategoryname as productcategory,datepart(quarter,dd.fulldatealternatekey) as quarterly,
 row_number () over (partition by datepart(quarter,dd.fulldatealternatekey) order by sum(f.salesamount) desc) as rn
@@ -36,3 +34,22 @@ group by dc.englishproductcategoryname,datepart(quarter,dd.fulldatealternatekey)
 )
 select * from Perquarter
 order by quarterly,revenue DESC
+++++++
+LASTLY, REVENUE PER PRODUCT CATEGORY PER REGION 
+This analysis breaks down total sales revenue by product category across different sales regions. 
+It reveals:
+Which product categories generate the most revenue in each region
+Regional product preferences and demand variations
+Opportunities for targeted marketing and inventory management by region
+Understanding revenue distribution at this granularity helps businesses tailor product offerings,
+optimize supply chains,effective targeted ads and focus sales efforts effectively.
+
+Track revenue per product in every region
+select sum(f.salesamount) as revenue,r.salesterritoryregion as region, pc.englishproductcategoryname as products
+from factresellersales as f
+join DimProduct as d on f.ProductKey=d.ProductKey
+join DimProductSubcategory as dp on d.ProductSubcategoryKey=dp.ProductSubcategoryKey
+join DimProductCategory as pc on dp.ProductCategoryKey=pc.ProductCategoryKey
+join dimsalesterritory as r on f.SalesTerritoryKey=r.SalesTerritoryKey
+group by r.SalesTerritoryRegion,pc.EnglishProductCategoryName
+order by revenue desc
