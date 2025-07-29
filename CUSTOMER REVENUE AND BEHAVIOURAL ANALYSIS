@@ -1,0 +1,71 @@
+Customer Revenue & Purchase Behavior Analysis — Key Insights
+1. Top 10 Customers by Total Revenue
+Identified the top 10 customers driving the highest revenue, contributing disproportionately to overall sales. These customers are critical for targeted retention and upsell strategies.
+----select top 10 c.firstname + ' ' + c.lastname as fullname, sum(f.salesamount) as totalsales from factinternetsales as f
+join dimcustomer as c on f.customerkey= c.customerkey
+group by c.firstname,c.lastname
+order by totalsales desc
+
+2. Repeat Purchases & Customer Loyalty
+A significant portion of customers made repeat purchases, indicating strong engagement and satisfaction. Repeat buyers are vital for stable revenue streams.
+--select c.firstname + ' ' + c.lastname as fullname,count(*) as repeatedcustomers, sum(f.salesamount) as totalsales from factinternetsales as f
+join dimcustomer as c on f.customerkey= c.customerkey
+group by c.firstname,c.lastname
+having count(*)>1
+order by totalsales desc
+
+3. Customers Purchasing More Than Once in the Last 6 Months
+15915 of customers made multiple purchases in the last 6 months, highlighting active and loyal segments to focus marketing efforts on.
+----select c.firstname + ' ' + c.lastname as customername,count(*) as repeatedcustomers, sum(f.salesamount) as totalpurchase
+,min (datepart (month,f.orderdate)) as firstday,max (datepart (month,f.orderdate)) as lastday
+from factinternetsales as f
+join dimcustomer as c on f.customerkey=c.customerkey
+where f.orderdate >= DATEADD(month, -6,'2011-01-01') and f.orderdate<>'2014-01-01'
+group by c.firstname,c.lastname
+having count(*)>1
+
+4. Revenue Per Customer & Average Revenue Benchmark
+Calculated individual customer revenue alongside the overall average to segment customers by value tiers (e.g., high, medium, low spenders). This segmentation informs personalized marketing and service levels.
+-- with totalrevenue as (select c.firstname + ' ' + c.lastname as fullname,sum(f.salesamount) as totalsales from factinternetsales as f 
+join dimcustomer as c on f.customerkey=c.customerkey
+group by c.firstname,c.lastname)
+,avgtotal as (select avg(totalsales) as customeraverage from totalrevenue)
+select tr.fullname,tr.totalsales,avt.customeraverage,
+case when tr.totalsales > avt.customeraverage then 'highperforming'
+when tr.totalsales<avt.customeraverage then 'lowperforming'
+else 'inbetween'
+end as performance
+from totalrevenue as tr
+cross join avgtotal as avt
+order by tr.totalsales desc
+
+5. Highest Spending Customer Segment by Region
+Analysis reveals which customer segments spend the most in each region, enabling region-specific sales strategies and localized campaigns for maximum impact.
+--select c.firstname + ' ' + c.lastname as fullname, sum(f.salesamount) as totalspend , t.salesterritoryregion as region
+from factinternetsales as f 
+join dimcustomer as c on f.customerkey=c.customerkey
+join dimsalesterritory as t on f.salesterritorykey=t.salesterritorykey
+group by c.firstname,c.lastname,t.salesterritoryregion,c.customerkey
+order by totalspend desc
+
+6. Monthly Revenue Breakdown: New vs Returning Customers
+Tracked monthly revenue trends split between new and returning customers. Returning customers consistently generate higher revenue, emphasizing the importance of loyalty programs and customer experience optimization.
+WITH FIRSTORDERS AS (SELECT CUSTOMERKEY,MIN(ORDERDATE) AS FIRSTORDERDATE FROM FACTINTERNETSALES GROUP BY CUSTOMERKEY),
+CUSTOMERSTATUS AS (SELECT F.CUSTOMERKEY, F.SALESAMOUNT ,FORMAT(F.ORDERDATE,'yyyy-MM') AS ORDERMONTH,F.ORDERDATE,
+CASE WHEN F.ORDERDATE=FO.FIRSTORDERDATE THEN 'NEW'
+ELSE 'RETURNING'
+END AS CUSTOMERTYPE
+FROM FACTINTERNETSALES AS F
+JOIN FIRSTORDERS AS FO ON F.CUSTOMERKEY = FO.CUSTOMERKEY
+)
+SELECT SUM(SALESAMOUNT) AS REVENUE,ORDERMONTH,CUSTOMERTYPE,COUNT(DISTINCT CUSTOMERKEY) AS NUMBEROFPURCHASE
+FROM CUSTOMERSTATUS
+GROUP BY ORDERMONTH,CUSTOMERTYPE
+ORDER BY ORDERMONTH,CUSTOMERTYPE
+
+Business Implications:
+Focus retention and personalized offers on the top 10 customers to maximize revenue growth.
+Prioritize engagement strategies for repeat buyers to boost lifetime value.
+Leverage segmentation to tailor communication and resource allocation effectively.
+Develop region-specific marketing campaigns based on segment spend patterns.
+Monitor new vs returning customer revenue trends monthly to adjust acquisition and retention tactics dynamically.
