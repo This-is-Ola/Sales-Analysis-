@@ -1,0 +1,27 @@
+🚀 Consumer preferences change faster than we expect 
+UK Market Sales Analysis – AdventureWorks Data
+
+I recently analyzed the AdventureWorks dataset to understand product sales performance and customer behavior in the UK. Below is a snapshot of my findings 👇
+
+🔹 Sales Trend (2010–2013):
+	•	Bikes dominated sales between 2010–2012, peaking in 2012.
+	•	In 2013, bike sales dropped sharply, while Accessories and Clothing started gaining traction.
+
+🔹 Order Quantity Analysis:
+	•	Bikes drove the highest order volumes in earlier years.
+	•	Accessories and Clothing orders steadily increased, highlighting a shift in consumer demand.
+
+🔹 Average Price by Product:
+	•	Bikes retained the highest price point, confirming their premium market position.
+	•	Accessories and Clothing stayed low-priced, relying more on sales volume.
+
+🔹 Customer Purchase Trend:
+	•	Top customers in 2010–2011 showed consistent spend.
+	•	By 2013, spending spread more evenly, with smaller-ticket items driving growth.
+
+📊 Key Takeaway:
+The market shifted from high-value bike sales to broader interest in Accessories and Clothing by 2013. This highlights the importance of diversifying product strategy and monitoring consumer preferences early.
+
+Note- Slicers was used to enable stakeholders explore KPI’s
+
+👉 See visuals in the chart below for a clearer picture of these trends.
